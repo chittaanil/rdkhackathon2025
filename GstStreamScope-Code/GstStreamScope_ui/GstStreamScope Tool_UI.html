@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GStreamer Visualization</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 40px;
+            background-color: #f4f4f4;
+        }
+        button {
+            padding: 12px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin: 10px;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        img {
+            margin-top: 20px;
+            max-width: 80%;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>GstStreamScope Tool</h1>
+    
+    <button onclick="fetchLatestImage()">Show Latest GStreamer Image</button>
+    <button onclick="openGrafana()">Visualize in Grafana</button>
+
+    <br>
+    <img id="latestImage" src="" alt="Latest GStreamer Image">
+
+    <script>
+        function fetchLatestImage() {
+            fetch("http://127.0.0.1:5000/api/latest-image")
+                .then(response => response.json())
+                .then(data => {
+                    if (data.latest) {
+                        document.getElementById("latestImage").src = "http://127.0.0.1:5000/logs/DOT/" + data.latest;
+                        document.getElementById("latestImage").style.display = "block";
+                    } else {
+                        alert("No image found.");
+                    }
+                })
+                .catch(error => console.error("Error fetching image:", error));
+        }
+
+        function openGrafana() {
+            window.open("http://localhost:3000/d/pVVxfWtNz/hackthon?orgId=1", "_blank");
+        }
+    </script>
+
+</body>
+</html>
