@@ -1,4 +1,3 @@
-
 GstStreamScope Tool
 
 Overview
